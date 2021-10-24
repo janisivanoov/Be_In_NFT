@@ -1,0 +1,44 @@
+﻿@{ ViewBag.Title = "Hi " + this.User.GetUsername(); }
+
+<div class="row">
+    <nav class="col-md-8 col-md-offset-2">
+        <ul class="nav nav-pills nav-justified">
+            <li class="tab active">
+                @Ajax.ActionLink("Posts", "GetUserPosts", "Posts",
+                              new AjaxOptions { UpdateTargetId = "user-profile-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace })
+            </li>
+            <li class="tab">
+                @Ajax.ActionLink("Favourite Posts", "GetFavouritePosts", "Posts",
+                                   new { page = 1 },
+                              new AjaxOptions { UpdateTargetId = "user-profile-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace })
+            </li>
+            <li class="tab">
+                @Ajax.ActionLink("Followers", "GetFollowers", "User",
+                                   new { username = this.User.GetUsername() },
+                              new AjaxOptions { UpdateTargetId = "user-profile-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace })
+            </li>
+            <li class="tab">
+                @Ajax.ActionLink("Following", "GetFollowing", "User",
+                                   new { username = this.User.GetUsername() },
+                              new AjaxOptions { UpdateTargetId = "user-profile-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace })
+            </li>
+        </ul>
+    </nav>
+</div>
+<br />
+<div class="row">
+    <section class="col-md-8 col-md-offset-2" id="user-profile-content">
+        @Html.Partial("_TweetList")
+    </section>
+</div>
+
+@section scripts
+{
+    <script>
+        $('li.tab.active>a').click();
+        $('li.tab').click(function () {
+            $('.tab').removeClass('active');
+            $(this).addClass('active');
+        });
+    </script>
+}

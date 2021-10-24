@@ -1,0 +1,8 @@
+﻿@model TwitterSystem.Web.InputModels.TweetInputModel
+
+@using (Html.BeginForm("AddTweet", "Tweets", FormMethod.Post))
+{
+@Html.AntiForgeryToken()
+                <div>@Html.ValidationMessageFor(m => m.Text, string.Empty, new { @class = "text-danger" })</div>
+                                @Html.TextAreaFor(m => m.Text, new { @placeholder = "Post...", @class = "form-control form-group" })
+                                                @Html.BootstrapSubmitButton("Post")}

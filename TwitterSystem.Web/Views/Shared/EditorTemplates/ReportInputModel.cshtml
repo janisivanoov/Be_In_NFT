@@ -1,0 +1,13 @@
+﻿@model TwitterSystem.Web.InputModels.ReportInputModel
+
+@using (Html.BeginForm("AddReport", "Reports", FormMethod.Post, new { @class = "form-inline margin-top-10" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.TweetId)
+    <div>@Html.ValidationMessageFor(m => m.Text, string.Empty, new { @class = "text-danger" })</div>
+    @Html.TextAreaFor(m => m.Text, new { @placeholder = "Report reason...", @class = "form-control form-group", @rows = 3 })
+    <div class="form-group">
+        <button type="button" class="btn btn-info" id="cancel" onclick="$(this).closest('form').remove()">Cancel</button>
+        @Html.BootstrapSubmitButton("Report")
+    </div>
+}

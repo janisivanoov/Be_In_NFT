@@ -1,0 +1,49 @@
+﻿@using TwitterSystem.Web.Areas.Administration.ViewModel.TweetsDetails
+
+@{
+    ViewBag.Title = "Tweets";
+    const string AreaName = "Administration";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        @(Html.Kendo().Grid<TweetsDetailsViewModel>()
+          .Name("TweetsGrid")
+          .ToolBar(toolbar =>
+           {
+               toolbar.Create().Text("Create");
+               toolbar.Custom().Text("Home").Action("Index", "TweetsDetailsController");
+           })
+          .Columns(columns =>
+          {
+              columns.Bound(col => col.Id);
+              columns.Bound(col => col.Text);
+              columns.Bound(col => col.TweetedAt);
+              columns.Bound(col => col.Username);
+              columns.Command(command => command.Edit().Text("Edit").UpdateText("Save").CancelText("Cancel"));
+              columns.Command(command => command.Destroy().Text("Delete"));
+          })
+          .Editable(editable =>
+          {
+              editable.Mode(GridEditMode.PopUp);
+              editable.Window(w => w.Title(ViewBag.Title));
+              editable.DisplayDeleteConfirmation("Are you sure?");
+          })
+          .Pageable(page => page.Refresh(true))
+          .Sortable()
+          .Filterable()
+          .Reorderable(x => x.Columns(true))
+          .Resizable(x => x.Columns(true))
+          .DataSource(data => data
+              .Ajax()
+              .ServerOperation(true)
+              .Model(model => model.Id(m => m.Id))
+              .Model(model => model.Field(m => m.Text))
+              .Create(create => create.Action("Create", "TweetsDetails", new { area = AreaName }))
+              .Read(read => read.Action("Read", "TweetsDetails", new { area = AreaName }))
+              .Update(update => update.Action("Update", "TweetsDetails", new { area = AreaName }))
+              .Destroy(destroy => destroy.Action("Delete", "TweetsDetails", new { area = AreaName }))
+          )
+        )
+    </div>
+</div>

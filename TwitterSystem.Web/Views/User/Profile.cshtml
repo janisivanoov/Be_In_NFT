@@ -1,0 +1,32 @@
+﻿@model TwitterSystem.Web.ViewModels.User.UserViewModel
+@{
+    ViewBag.Title = @Model.UserName + " Profile";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="badge">@Model.Tweets</span>
+                Tweets
+            </li>
+            <li class="list-group-item">
+                <span class="badge">@Model.Following</span>
+                Following
+            </li>
+            <li class="list-group-item">
+                <span class="badge">@Model.Followers</span>
+                Followers
+            </li>
+            <li class="list-group-item">
+                <span class="badge">@Model.FavouriteTweets</span>
+                Favourites
+            </li>
+        </ul>
+
+        @Html.Partial("_FollowUser")
+    </div>
+</div>
+
+
+

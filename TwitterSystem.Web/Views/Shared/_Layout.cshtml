@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter - @ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendo/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/kendo")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("BeInNFT", "Index", "Home", new { area = string.Empty }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request.IsAuthenticated)
+                    {
+        <li>@Html.ActionLink("My Posts", "Index", "User", new { area = string.Empty }, null)</li>
+                        <li>@Html.ActionLink("Add Post", "AddNewTweet", "User", new { area = string.Empty, }, null)</li>
+ if (User.IsInRole("Administrator"))
+                        {
+        <li>@Html.ActionLink("Administration", "Index", "TweetsDetails", new { area = "Administration" }, null)</li>
+}
+}
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h2 class="text-center col-md-8 col-md-offset-2">@ViewBag.Title</h2>
+        @if (TempData["alerts"] != null)
+        {
+@Html.DisplayFor(m => TempData["alerts"])}
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-center">&copy; @DateTime.Now.Year - Ivan Ivanou</p>
+        </footer>
+    </div>
+
+    <script src="~/signalr/hubs"></script>
+    @if (User.IsLoggedIn())
+    {
+<script src="~/Scripts/notificationsListener.js"></script>
+}
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

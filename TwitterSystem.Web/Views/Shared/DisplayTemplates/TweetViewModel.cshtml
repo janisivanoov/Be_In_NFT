@@ -1,0 +1,44 @@
+﻿@model TwitterSystem.Web.ViewModels.Tweets.TweetViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span class="badge">
+            @Html.ActionLink(Model.Username, "Profile", "User", new { username = Model.Username }, null)
+        </span>
+        posted at @Model.TweetedAt.ToString("HH:mm:ss dd.MM.yyyy")
+    </div>
+    <div class="panel-body">
+        @Model.Text
+    </div>
+    @if (User.IsLoggedIn() && Model.Username != User.GetUsername())
+    {
+<div class="panel-footer">
+    @if (Model.IsFavouriteToCurrentUser)
+    {
+@Ajax.ActionLink("[remove from favourites]", "RemoveFavouritePost", "Posts", new { id = Model.Id },
+         new AjaxOptions { HttpMethod = "POST" }, new { onclick = "$(this).fadeOut();" }) }
+else
+{
+@Ajax.ActionLink("[add to favourites]", "AddFavouritePost", "Posts", new { id = Model.Id },
+         new AjaxOptions { HttpMethod = "POST" }, new { onclick = "$(this).fadeOut();" })}
+
+    @Ajax.ActionLink("[retweet]", "Reposts", "Posts", new { id = Model.Id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     UpdateTargetId = "tweet-content-" + Model.Id,
+                     InsertionMode = InsertionMode.Replace
+                 })
+
+    @Ajax.ActionLink("[report]", "ShowReportForm", "Posts", new { id = Model.Id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "GET",
+                     UpdateTargetId = "tweet-content-" + Model.Id,
+                     InsertionMode = InsertionMode.Replace,
+                     OnSuccess = "validatorParse"
+                 })
+
+    <div id="tweet-content-@Model.Id"></div>
+</div>}
+</div>

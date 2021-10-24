@@ -1,0 +1,25 @@
+﻿@model TwitterSystem.Web.ViewModels.User.UserAddNewTweetModel
+@{ ViewBag.Title = "Post"; }
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h3>Add new post</h3>
+        @Html.EditorFor(m => m.NewTweet)
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function validatorParse() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+
+        $.connection.tweets.client.friendTweeted = function (tweetId) {
+            $.get('/Tweets/GetById/' + tweetId, function (tweetDiv) {
+                $('#tweets').prepend(tweetDiv);
+            });
+        }
+    </script>
+}

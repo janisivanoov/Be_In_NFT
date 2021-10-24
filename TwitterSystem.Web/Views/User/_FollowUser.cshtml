@@ -1,0 +1,17 @@
+﻿@model TwitterSystem.Web.ViewModels.User.UserViewModel
+
+@if (!Model.IsCurrentUser)
+{
+    <h4 class="text-center follow-link col-md-8 col-md-offset-2">
+        @if (Model.IsFollowedByCurrentUser)
+        {
+            @Ajax.ActionLink("[unfollow]", "UnfollowUser", "User", new { username = Model.UserName },
+                new AjaxOptions { HttpMethod = "POST" }, new { onclick = "$(this).fadeOut();" })
+        }
+        else
+        {
+            @Ajax.ActionLink("[follow]", "FollowUser", "User", new { username = Model.UserName },
+                new AjaxOptions { HttpMethod = "POST" }, new { onclick = "$(this).fadeOut();" })
+        }
+    </h4>
+}

@@ -1,0 +1,22 @@
+﻿@model TwitterSystem.Web.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h3>Latest tweets</h3>
+        @Html.Partial("_TweetList")
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $.connection.hub.start();
+        $.connection.tweets.client.tweetAdded = function (tweetId) {
+            $.get('/Tweets/GetById/' + tweetId, function (tweetDiv) {
+                $('#tweets').prepend(tweetDiv);
+            });
+        }
+    </script>
+}
